@@ -114,12 +114,12 @@ class _HomeDemoState extends State<HomeDemo> {
                     children: [
                       Text(snapshot.data?.name ?? "",style: kPrimaryCityNameTestStyle,),
                       Text("${snapshot.data?.main?.temp}°", style: kPrimaryTemperatureTestStyleHome),
-                      // Image.network(
-                      //   "https://openweathermap.org/img/wn/${snapshot.data?.weather[0].icon}@2x.png",
-                      //   width: width / 3.5,
-                      //   height: width / 3.5,
-                      //   fit: BoxFit.fill,v
-                      // ),
+                      Image.network(
+                        "https://openweathermap.org/img/wn/10d@4x.png",
+                        // width: width / 3.5,
+                        // height: width / 3.5,
+                        fit: BoxFit.fill,
+                      ),
                       Text(snapshot.data?.weather[0].main?? "",style: kPrimaryTemperatureWeather,),
                       Text("Min:${snapshot.data?.main?.tempMin}°   Max:${snapshot.data?.main?.tempMax}°",
                           style: kPrimaryTemperatureWeather),

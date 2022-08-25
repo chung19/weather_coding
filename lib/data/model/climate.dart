@@ -4,7 +4,7 @@ class Climate {
   int dt = -1;
   Sys sys = Sys();
   String name = "";
-
+ String icon = "";
   Climate();
 
   Climate.init({
@@ -13,6 +13,7 @@ class Climate {
     required this.dt,
     required this.sys,
     required this.name,
+
 
   });
 
@@ -53,7 +54,7 @@ class Weather {
 
   @override
   String toString() {
-    return 'Weather{main: $main, description: $description}';
+    return 'Weather{main: $main, description: $description,icon: $icon,}';
   }
   Weather.fromJson(dynamic json) {
     main = json['main'];
@@ -70,3 +71,10 @@ class Weather {
     return map;
   }
 }
+
+
+
+
+
+
+
