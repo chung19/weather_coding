@@ -39,6 +39,8 @@ dependencies:
   rxdart: ^0.27.5
   equatable: ^2.0.4
   font_awesome_flutter: ^10.1.0
+  autocomplete_textfield: ^2.0.1
+  flutter_spinkit: ^5.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,6 +67,7 @@ flutter:
  assets:
   - assets/images/Image.png
   - assets/images/House.png
+  - assets/images/Details.png
 
   
 

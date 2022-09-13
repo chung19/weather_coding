@@ -1,12 +1,15 @@
 import 'package:flutter_weather_06072022/data/model/climate.dart';
 
 class ClimateDto {
+
+
   ClimateDto({
     this.weather,
     this.main,
     this.dt,
     this.sys,
     this.name,
+
   });
 
   ClimateDto.fromJson(dynamic json) {
@@ -20,6 +23,7 @@ class ClimateDto {
     dt = json['dt'];
     sys = json['sys'] != null ? SysDto.fromJson(json['sys']) : null;
     name = json['name'];
+    icon = json['icon'];
   }
 
   List<WeatherDto>? weather;
@@ -27,7 +31,7 @@ class ClimateDto {
   int? dt;
   SysDto? sys;
   String? name;
-
+  String? icon;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (weather != null) {
@@ -47,7 +51,7 @@ class ClimateDto {
   Climate convertToClimate() {
     List<Weather> listWeather = [];
     weather?.forEach((weatherDto) {
-      listWeather.add(Weather(main: weatherDto.main ?? "", description: weatherDto.description ?? ""));
+      listWeather.add(Weather(main: weatherDto.main ?? "", description: weatherDto.description ?? "", icon: weatherDto.icon ?? ""));
     });
     return Climate.init(
         weather: listWeather,
@@ -58,7 +62,8 @@ class ClimateDto {
         ),
         dt: dt ?? -1,
         sys: Sys(country: sys?.country ?? ""),
-        name: name ?? ""
+        name: name ?? "",
+
     );
   }
 }
@@ -102,25 +107,28 @@ class MainDto {
 }
 
 class WeatherDto {
-  WeatherDto({this.main, this.description,String? icon}){
-    icon = _icon;
-  }
+  WeatherDto({
+    this.main,
+    this.description,
+    this.icon,});
 
   WeatherDto.fromJson(dynamic json) {
     main = json['main'];
     description = json['description'];
-
-    _icon = json['icon'];
+    icon = json['icon'];
   }
-  String? _icon;
   String? main;
   String? description;
-  String? get icon => _icon;
+  String? icon;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['main'] = main;
     map['description'] = description;
-    map['icon'] = _icon;
+    map['icon'] = icon;
     return map;
   }
+
 }
+
+

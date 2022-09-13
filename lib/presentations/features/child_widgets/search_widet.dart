@@ -16,6 +16,8 @@ late ApiService repository ;
 late HomeController homeController;
 String? text;
 TextEditingController controller = TextEditingController();
+
+
 @override
 void initState() {
   super.initState();
@@ -61,6 +63,7 @@ void initState() {
                         ),
                             onPressed: () {
                               String text = controller.text.toString();
+
                               if (text.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Bạn chưa nhập thành phố")));
                                 return;

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_06072022/common/app_constant.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_weather_06072022/presentations/features/child_widgets/se
 import 'package:provider/provider.dart';
  import 'package:flutter_weather_06072022/data/remote/dto/climate_dto.dart';
 
+import '../child_widgets/loading_widget.dart';
+late HomeController _bloc;
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -51,9 +54,13 @@ class _HomeDemoState extends State<HomeDemo> {
   late HomeController homeController;
   late double width;
   late double height;
+
   @override
   void initState() {
     super.initState();
+    _bloc = context.read<HomeController>();
+    // width = MediaQuery.of(context).size.width;
+    // height = MediaQuery.of(context).size.height;
     homeController = context.read();
     homeController.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
   }
@@ -82,11 +89,15 @@ class _HomeDemoState extends State<HomeDemo> {
             stream: homeController.loadingStream,
             builder: (context, snapshot) {
               if (snapshot.data != null && snapshot.data == true) {
-                return CircularProgressIndicator();
+                return HomePage();
               }
               return Container();
             },
           ),
+          LoadingWidget(
+            bloc: _bloc,
+            child: Container(),
+          )
         ],
       ),
     ));
@@ -113,15 +124,18 @@ class _HomeDemoState extends State<HomeDemo> {
                   return Column(
                     children: [
                       Text(snapshot.data?.name ?? "",style: kPrimaryCityNameTestStyle,),
-                      Text("${snapshot.data?.main?.temp}°", style: kPrimaryTemperatureTestStyleHome),
+                      Text("${snapshot.data?.main.temp}°", style: kPrimaryTemperatureTestStyleHome),
+
                       Image.network(
-                        "https://openweathermap.org/img/wn/10d@4x.png",
-                        // width: width / 3.5,
-                        // height: width / 3.5,
+                        // "https://openweathermap.org/img/wn/10d@4x.png",
+                        "https://openweathermap.org/img/wn/${snapshot.data?.weather[0].icon}@2x.png",
+                        // width: width / 4,
+                        // height: width / 4,
                         fit: BoxFit.fill,
                       ),
-                      Text(snapshot.data?.weather[0].main?? "",style: kPrimaryTemperatureWeather,),
-                      Text("Min:${snapshot.data?.main?.tempMin}°   Max:${snapshot.data?.main?.tempMax}°",
+
+                      Text(snapshot.data?.weather[0].main ?? '',style: kPrimaryTemperatureWeather,),
+                      Text("Min:${snapshot.data?.main.tempMin}°   Max:${snapshot.data?.main.tempMax}°",
                           style: kPrimaryTemperatureWeather),
                       SizedBox(
                         height: 50,
