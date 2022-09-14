@@ -24,6 +24,7 @@ void initState() {
   homeController = context.read();
   homeController.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
 }
+dispose();
 
 
 

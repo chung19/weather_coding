@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_06072022/common/app_constant.dart';
 import 'package:flutter_weather_06072022/data/model/climate.dart';
@@ -14,6 +13,7 @@ import 'package:provider/provider.dart';
  import 'package:flutter_weather_06072022/data/remote/dto/climate_dto.dart';
 
 import '../child_widgets/loading_widget.dart';
+import '../child_widgets/progress_listener_widget.dart';
 late HomeController _bloc;
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,14 +53,12 @@ class HomeDemo extends StatefulWidget {
 class _HomeDemoState extends State<HomeDemo> {
   late HomeController homeController;
   late double width;
-  late double height;
+
 
   @override
   void initState() {
     super.initState();
     _bloc = context.read<HomeController>();
-    // width = MediaQuery.of(context).size.width;
-    // height = MediaQuery.of(context).size.height;
     homeController = context.read();
     homeController.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
   }
@@ -71,6 +69,7 @@ class _HomeDemoState extends State<HomeDemo> {
   Widget build(BuildContext context) {
     print("Build");
     return Scaffold(
+
         body: Container(
       height: double.infinity,
       width: double.infinity,
@@ -93,6 +92,13 @@ class _HomeDemoState extends State<HomeDemo> {
               }
               return Container();
             },
+          ),
+          ProgressListenerWidget<HomeController>(
+            callback: (event) {
+
+              Navigator.pushReplacementNamed(context, AppConstant.routeDetailPage);
+              },
+              child: Container(),
           ),
           LoadingWidget(
             bloc: _bloc,
@@ -123,8 +129,8 @@ class _HomeDemoState extends State<HomeDemo> {
                   }
                   return Column(
                     children: [
-                      Text(snapshot.data?.name ?? "",style: kPrimaryCityNameTestStyle,),
-                      Text("${snapshot.data?.main.temp}°", style: kPrimaryTemperatureTestStyleHome),
+                      Text(snapshot.data?.name ?? "",style: kPrimaryCityNameTextStyle,),
+                      Text("${snapshot.data?.main.temp}°", style: kPrimaryTemperatureTextStyleHome),
 
                       Image.network(
                         // "https://openweathermap.org/img/wn/10d@4x.png",
@@ -134,17 +140,25 @@ class _HomeDemoState extends State<HomeDemo> {
                         fit: BoxFit.fill,
                       ),
 
-                      Text(snapshot.data?.weather[0].main ?? '',style: kPrimaryTemperatureWeather,),
+                      Text(snapshot.data?.weather[0].main ?? '',style: kPrimaryTextTemperatureWeather,),
                       Text("Min:${snapshot.data?.main.tempMin}°   Max:${snapshot.data?.main.tempMax}°",
-                          style: kPrimaryTemperatureWeather),
+                          style: kPrimaryTextTemperatureWeather),
+
+                      IconButton(
+                          onPressed: (){
+                            Navigator.pushReplacementNamed(context, AppConstant.routeDetailPage);
+                          },
+                          icon: Icon(Icons.add_circle_outlined ,size: 50,)
+                      ),
                       SizedBox(
                         height: 50,
                           width : MediaQuery.of(context).size.width,
 
                       ),
+
                       Image.asset(
                         'assets/images/House.png',
-                        // width: 359,
+                        // width: double.infinity,
                         // height: 359,
                       ),
                     ],

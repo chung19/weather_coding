@@ -12,7 +12,7 @@ class HomeController {
   final BehaviorSubject<Climate> _behaviorClimateController = BehaviorSubject();
   final StreamController<bool> _loadingController = StreamController.broadcast();
   final StreamController<HomeBaseEvent> _eventController = StreamController();
-
+  final StreamController<HomeBaseEvent> _progressController = BehaviorSubject();
   void updateClimateRepository({required ClimateRepository climateRepository}) {
     _climateRepository = climateRepository;
   }
@@ -27,7 +27,7 @@ class HomeController {
     });
   }
 
-
+  Stream<HomeBaseEvent> get progressStream => _progressController.stream;
   Stream<Climate> get climateStream => _behaviorClimateController.stream;
 
   Stream<bool> get loadingStream => _loadingController.stream;
@@ -37,6 +37,8 @@ class HomeController {
   Sink get loadingSink => _loadingController.sink;
 
   Sink get eventSink => _eventController.sink;
+ 
+
 
   void _getTempFromCityName(CallDefaultWeatherEvent event) async {
     _loadingController.sink.add(true);
@@ -53,12 +55,18 @@ class HomeController {
     }
     _loadingController.sink.add(false);
   }
+  homeController(){
+    _eventController.stream.listen((event) {
+      dispatch(event);
+    });
+  }
+  void dispose() {
+    _loadingController.close();
+    _behaviorClimateController.close();
+    _eventController.close();
+  }
 
-  // void dispose() {
-  //   _loadingController.close();
-  //   _behaviorClimateController.close();
-  //   _eventController.close();
-  // }
+  void dispatch(HomeBaseEvent event) {}
 
 
 }
