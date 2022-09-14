@@ -6,7 +6,7 @@ import 'package:flutter_weather_06072022/common/app_constant.dart';
 import 'package:flutter_weather_06072022/data/model/climate.dart';
 import 'package:flutter_weather_06072022/data/remote/api/api_service.dart';
 import 'package:flutter_weather_06072022/data/repository/climate_repository.dart';
-import 'package:flutter_weather_06072022/presentations/features/child_widgets/showResponse.dart';
+import 'package:flutter_weather_06072022/presentations/features/child_widgets/show_response_detail.dart';
 import 'package:flutter_weather_06072022/presentations/features/home/home_controller.dart';
 import 'package:flutter_weather_06072022/presentations/features/home/home_event.dart';
 import 'package:flutter_weather_06072022/presentations/features/child_widgets/search_widet.dart';
@@ -81,7 +81,7 @@ dispose();
             alignment: Alignment.center,
             children: [
 
-            ShowResponse(),
+            ShowResponseDetail(),
 
               StreamBuilder<bool>(
                 initialData: false,
@@ -109,9 +109,6 @@ dispose();
           ),
         ));
   }
-
-
-
 
   }
 

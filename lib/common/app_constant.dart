@@ -22,7 +22,11 @@ const kPrimaryTextTemperatureWeather = TextStyle(
   fontSize: 25,
   color: kPrimaryColorHome,
 );
-const kPrimaryTextMainTemperature = TextStyle(
+const kPrimaryTextMainTemperature2 = TextStyle(
   fontSize: 25,
+  color: kPrimaryColorMainTemperature,
+);
+const kPrimaryTextMainTemperature = TextStyle(
+  fontSize: 45,
   color: kPrimaryColorMainTemperature,
 );

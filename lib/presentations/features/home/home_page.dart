@@ -6,6 +6,7 @@ import 'package:flutter_weather_06072022/common/app_constant.dart';
 import 'package:flutter_weather_06072022/data/model/climate.dart';
 import 'package:flutter_weather_06072022/data/remote/api/api_service.dart';
 import 'package:flutter_weather_06072022/data/repository/climate_repository.dart';
+import 'package:flutter_weather_06072022/presentations/features/child_widgets/show_response_climate.dart';
 import 'package:flutter_weather_06072022/presentations/features/home/home_controller.dart';
 import 'package:flutter_weather_06072022/presentations/features/home/home_event.dart';
 import 'package:flutter_weather_06072022/presentations/features/child_widgets/search_widet.dart';
@@ -81,8 +82,7 @@ class _HomeDemoState extends State<HomeDemo> {
         alignment: Alignment.center,
         children: [
           SearchWidget(),
-          showResClimate(),
-
+         ShowResponseClimate(),
           StreamBuilder<bool>(
             initialData: false,
             stream: homeController.loadingStream,
@@ -111,73 +111,7 @@ class _HomeDemoState extends State<HomeDemo> {
 
 
 
-  Container showResClimate() {
-    return Container(
-      child: Positioned(
-        top: 140,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: StreamBuilder<Climate>(
-                initialData: null,
-                stream: homeController.climateStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
-                  }
-                  return Column(
-                    children: [
-                      Text(snapshot.data?.name ?? "",style: kPrimaryCityNameTextStyle,),
-                      Text("${snapshot.data?.main.temp}°", style: kPrimaryTemperatureTextStyleHome),
 
-                      Image.network(
-                        // "https://openweathermap.org/img/wn/10d@4x.png",
-                        "https://openweathermap.org/img/wn/${snapshot.data?.weather[0].icon}@2x.png",
-                        // width: width / 4,
-                        // height: width / 4,
-                        fit: BoxFit.fill,
-                      ),
-
-                      Text(snapshot.data?.weather[0].main ?? '',style: kPrimaryTextTemperatureWeather,),
-                      Text("Min:${snapshot.data?.main.tempMin}°   Max:${snapshot.data?.main.tempMax}°",
-                          style: kPrimaryTextTemperatureWeather),
-
-                      IconButton(
-                          onPressed: (){
-                            Navigator.pushReplacementNamed(context, AppConstant.routeDetailPage);
-                          },
-                          icon: Icon(Icons.add_circle_outlined ,size: 50,)
-                      ),
-                      SizedBox(
-                        height: 50,
-                          width : MediaQuery.of(context).size.width,
-
-                      ),
-
-                      Image.asset(
-                        'assets/images/House.png',
-                        // width: double.infinity,
-                        // height: 359,
-                      ),
-                    ],
-                  )
-                  ;
-
-                },
-              ),
-            )
-
-
-
-
-
-          ],
-        ),
-      ),
-    );
-  }
 
 
 }
