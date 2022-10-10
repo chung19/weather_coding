@@ -9,7 +9,7 @@ import '../home/home_event.dart';
  * @param Widget
  * @param Function
  */
-class ProgressListenerWidget<T extends HomeController> extends StatefulWidget {
+class ProgressListenerWidget<T extends HomeBloc> extends StatefulWidget {
   final Widget child;
   final Function(HomeBaseEvent event) callback;
 
@@ -25,7 +25,7 @@ class _ProgressListenerWidgetState<T> extends State<ProgressListenerWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    var bloc = context.read<T>() as HomeController;
+    var bloc = context.read<T>() as HomeBloc;
     bloc.progressStream.listen((event) {
       widget.callback(event);
     },
@@ -35,7 +35,7 @@ class _ProgressListenerWidgetState<T> extends State<ProgressListenerWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<HomeBaseEvent?>(
-      create: (_) => (context.read<T>() as HomeController).progressStream,
+      create: (_) => (context.read<T>() as HomeBloc).progressStream,
       initialData: null,
       updateShouldNotify: (prev, current) {
         return true;

@@ -5,7 +5,7 @@ import '../home/home_controller.dart';
 
 class LoadingWidget extends StatelessWidget {
   final Widget child;
-  final HomeController bloc;
+  final HomeBloc bloc;
 
   LoadingWidget({
     required this.child,

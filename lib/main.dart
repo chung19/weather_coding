@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_06072022/common/app_constant.dart';
-import 'package:flutter_weather_06072022/data/remote/dio_client.dart';
-import 'package:flutter_weather_06072022/presentations/features/detail/detail_page.dart';
 import 'package:flutter_weather_06072022/presentations/features/home/home_page.dart';
 
 void main() {
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         AppConstant.routeHomePage: (context) => HomePage(),
-        AppConstant.routeDetailPage: (context) =>DetailPage()
+        // AppConstant.routeDetailPage: (context) =>DetailPage()
       },
       initialRoute: AppConstant.routeHomePage
     );

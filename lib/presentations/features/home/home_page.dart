@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_06072022/common/app_constant.dart';
-import 'package:flutter_weather_06072022/data/model/climate.dart';
 import 'package:flutter_weather_06072022/data/remote/api/api_service.dart';
 import 'package:flutter_weather_06072022/data/repository/climate_repository.dart';
 import 'package:flutter_weather_06072022/presentations/features/child_widgets/show_response_climate.dart';
@@ -15,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../child_widgets/loading_widget.dart';
 import '../child_widgets/progress_listener_widget.dart';
-late HomeController _bloc;
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -30,10 +26,10 @@ class HomePage extends StatelessWidget {
           climateRepository.updateClimateRepository(apiService: apiService);
           return climateRepository;
         }),
-        ProxyProvider<ClimateRepository, HomeController>(
-            create: (context) => HomeController(),
+        ProxyProvider<ClimateRepository, HomeBloc>(
+            create: (context) => HomeBloc(),
             update: (context, repository, controller) {
-              controller ??= HomeController();
+              controller ??= HomeBloc();
               controller.updateClimateRepository(climateRepository: repository);
               return controller;
             })
@@ -52,16 +48,15 @@ class HomeDemo extends StatefulWidget {
 }
 
 class _HomeDemoState extends State<HomeDemo> {
-  late HomeController homeController;
-  late double width;
+  late HomeBloc _bloc;
 
 
   @override
   void initState() {
     super.initState();
-    _bloc = context.read<HomeController>();
-    homeController = context.read();
-    homeController.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
+    // _bloc = context.read<HomeController>();
+    _bloc = context.read();
+    _bloc.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
   }
 
 
@@ -70,7 +65,6 @@ class _HomeDemoState extends State<HomeDemo> {
   Widget build(BuildContext context) {
     print("Build");
     return Scaffold(
-
         body: Container(
       height: double.infinity,
       width: double.infinity,
@@ -85,7 +79,7 @@ class _HomeDemoState extends State<HomeDemo> {
          ShowResponseClimate(),
           StreamBuilder<bool>(
             initialData: false,
-            stream: homeController.loadingStream,
+            stream: _bloc.loadingStream,
             builder: (context, snapshot) {
               if (snapshot.data != null && snapshot.data == true) {
                 return HomePage();
@@ -93,12 +87,13 @@ class _HomeDemoState extends State<HomeDemo> {
               return Container();
             },
           ),
-          ProgressListenerWidget<HomeController>(
+          ProgressListenerWidget<HomeBloc>(
             callback: (event) {
-
-              Navigator.pushReplacementNamed(context, AppConstant.routeDetailPage);
+              if (event is DetailSuccessEvent &&  DetailSuccessEvent ==null)  {
+    Navigator.pop(context, {"city Name": event.cityName, });
+    }
               },
-              child: Container(),
+            child: Container(),
           ),
           LoadingWidget(
             bloc: _bloc,

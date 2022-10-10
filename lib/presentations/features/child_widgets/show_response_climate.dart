@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_06072022/presentations/features/child_widgets/show_response_detail.dart';
 import 'package:provider/provider.dart';
 import '../../../common/app_constant.dart';
 import '../../../data/model/climate.dart';
 import '../home/home_controller.dart';
 import '../home/home_event.dart';
-late HomeController homeController;
 class ShowResponseClimate extends StatefulWidget {
   const ShowResponseClimate({Key? key}) : super(key: key);
 
@@ -14,10 +12,12 @@ class ShowResponseClimate extends StatefulWidget {
 }
 
 class _ShowResponseClimateState extends State<ShowResponseClimate> {
+  late HomeBloc _bloc;
+  @override
   void initState() {
     super.initState();
-    homeController = context.read();
-    homeController.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
+    _bloc = context.read();
+    _bloc.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
   }
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _ShowResponseClimateState extends State<ShowResponseClimate> {
             Center(
               child: StreamBuilder<Climate>(
                 initialData: null,
-                stream: homeController.climateStream,
+                stream: _bloc.climateStream,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
@@ -42,8 +42,8 @@ class _ShowResponseClimateState extends State<ShowResponseClimate> {
                       Text("${snapshot.data?.main.temp}°", style: kPrimaryTextMainTemperature),
 
                       Image.network(
-                        // "https://openweathermap.org/img/wn/10d@4x.png",
-                        "https://openweathermap.org/img/wn/${snapshot.data?.weather[0].icon}@2x.png",
+
+                        "https://openweathermap.org/img/wn/${snapshot.data?.weather[0].icon}@4x.png",
                         // width: width / 4,
                         // height: width / 4,
                         fit: BoxFit.fill,
@@ -53,12 +53,12 @@ class _ShowResponseClimateState extends State<ShowResponseClimate> {
                       Text("Min:${snapshot.data?.main.tempMin}°   Max:${snapshot.data?.main.tempMax}°",
                           style: kPrimaryTextTemperatureWeather),
 
-                      IconButton(
-                          onPressed: (){
-                            Navigator.pushReplacementNamed(context, AppConstant.routeDetailPage);
-                          },
-                          icon: Icon(Icons.add_circle_outlined ,size: 50,)
-                      ),
+                      // IconButton(
+                      //     onPressed: (){
+                      //       Navigator.pushReplacementNamed(context, AppConstant.routeDetailPage);
+                      //     },
+                      //     icon: const Icon(Icons.add_circle_outlined ,size: 50,)
+                      // ),
                       SizedBox(
                         height: 50,
                         width : MediaQuery.of(context).size.width,

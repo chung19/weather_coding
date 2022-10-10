@@ -5,15 +5,15 @@ import '../../../data/remote/api/api_service.dart';
 import 'package:flutter_weather_06072022/presentations/features/home/home_event.dart';
 
 import '../home/home_controller.dart';
-class SearchWidget extends StatefulWidget {
+class SearchWidget extends StatefulWidget  {
   const SearchWidget({Key? key}) : super(key: key);
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends State<SearchWidget> {
+class _SearchWidgetState extends State<SearchWidget>  {
 late ApiService repository ;
-late HomeController homeController;
+late HomeBloc _bloc;
 String? text;
 TextEditingController controller = TextEditingController();
 
@@ -21,8 +21,8 @@ TextEditingController controller = TextEditingController();
 @override
 void initState() {
   super.initState();
-  homeController = context.read();
-  homeController.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
+  _bloc = context.read();
+  _bloc.eventSink.add(CallDefaultWeatherEvent(cityName: "Hanoi"));
 }
 dispose();
 
@@ -66,10 +66,10 @@ dispose();
                               String text = controller.text.toString();
 
                               if (text.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Bạn chưa nhập thành phố")));
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Bạn chưa nhập thành phố")));
                                 return;
                               }
-                              homeController.eventSink
+                              _bloc.eventSink
                                   .add(CallDefaultWeatherEvent(cityName: text));
 
                         },
@@ -78,11 +78,14 @@ dispose();
                 ),
               ),
               ),
+
             ],
           )
         ],
       ),
+
     );
+
   }
 }
 
