@@ -1,3 +1,9 @@
+Tools using: Android Studio
+
+main library:
+
+Provider, RXDart,Dio,Lotte ...
+
 #Use proxy and bloc ( based on the bloc's data transmission and collection mechanism)
 
 call api layer by layer
